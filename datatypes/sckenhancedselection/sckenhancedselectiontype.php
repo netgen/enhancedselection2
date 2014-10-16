@@ -969,16 +969,26 @@ class SckEnhancedSelectionType extends eZDataType
 
     function fromString( $objectAttribute, $string )
     {
-            $content = unserialize( $string );
-                $objectAttribute->setContent( $content );
+        $content = unserialize( $string );
+        if ($content == false)
+        {
+            if (!empty($string) && is_string($string))
+            {
+                $content = array( $string );
+            }
+        }
+        $objectAttribute->setContent( $content );
     }
 
     function toString( $objectAttribute )
     {
-            $content = $objectAttribute->content();
-            return serialize( $content );
+        $content = $objectAttribute->content();
+        if( count( $content ) == 1)
+        {
+            return $content[0];
+        }
+        return serialize( $content );
     }
-
 }
 
 eZDataType::register( SckEnhancedSelectionType::DATATYPESTRING, "sckenhancedselectiontype" );
