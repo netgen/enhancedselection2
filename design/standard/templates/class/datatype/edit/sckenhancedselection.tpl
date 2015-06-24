@@ -1,10 +1,10 @@
 {let id=$class_attribute.id
      content=$class_attribute.content
      i18n_context="extension/sckenhancedselection/class/edit"}
-     
+
 <fieldset>
     <legend>{"Option list"|i18n($i18n_context)}</legend>
-    
+
     {section show=count($content.options)|gt(0)}
         <table class="list" cellspacing="0">
             <tr>
@@ -14,7 +14,7 @@
                 <th>{"Priority"|i18n($i18n_context)}</th>
                 <th style="width: 1%;">&nbsp;</th>
             </tr>
-            
+
             {section var=option_row loop=$content.options}
                 <tr>
                     <td>
@@ -22,30 +22,30 @@
                                name="ContentClass_sckenhancedselection_remove_{$id}[]"
                                value="{$option_row.index}" />
                     </td>
-                    
+
                     <td>
                         <input type="hidden"
                                name="ContentClass_sckenhancedselection_id_{$id}[]"
                                value="{$option_row.item.id}" />
-                        
+
                         <input type="text"
                                name="ContentClass_sckenhancedselection_name_{$id}[{$option_row.item.id}]"
                                value="{$option_row.item.name|wash}" />
                     </td>
-                    
+
                     <td>
                         <input type="text"
                                name="ContentClass_sckenhancedselection_identifier_{$id}[{$option_row.item.id}]"
                                value="{$option_row.item.identifier|wash}" />
                     </td>
-                    
+
                     <td>
                         <input type="text"
                                name="ContentClass_sckenhancedselection_priority_{$id}[{$option_row.item.id}]"
                                value="{$option_row.item.priority|wash}"
                                size="3" />
                     </td>
-                    
+
                     <td>
                         <div style="white-space: nowrap;">
                             {let upEnabled=$option_row.number|eq(1)|not
@@ -59,7 +59,7 @@
                                    value="{$option_row.index}"
                                    title="{'Move up'|i18n($i18n_context)}"
                                    {section show=$upEnabled|not}disabled="disabled"{/section} />
-                                   
+
                             <input type="image"
                                    src={$downImage|ezimage}
                                    name="CustomActionButton[{$id}_move_down]"
@@ -73,24 +73,24 @@
             {/section}
         </table>
     {/section}
-    
+
     <div class="block">
         <input type="submit"
                class="button"
                value="{'New option'|i18n($i18n_context)}"
                name="CustomActionButton[{$id}_new_option]" />
-               
+
         <input type="submit"
                {section show=count($content.options)|gt(0)}class="button"{section-else}disabled="disabled"{/section}
                value="{'Remove selected option(s)'|i18n($i18n_context)}"
                name="CustomActionButton[{$id}_remove_optionlist]" />
-               
+
         {* Sorting 1 option doesn't make sense *}
         <input type="submit"
                {section show=count($content.options)|gt(1)}class="button"{section-else}disabled="disabled"{/section}
                value="{'Sort options'|i18n($i18n_context)}"
                name="CustomActionButton[{$id}_sort_optionlist]" />
-               
+
         <select {section show=count($content.options)|le(1)}disabled="disabled"{/section}
                 name="ContentClass_sckenhancedselection_sort_order_{$id}">
             <option value="alpha_asc">{"A-Z"|i18n($i18n_context)}</option>
@@ -107,7 +107,7 @@
                name="ContentClass_sckenhancedselection_multi_{$id}"
                {section show=$content.is_multiselect}checked="checked"{/section} />
     </div>
-    
+
     <div class="element">
         <label>{"Delimiter"|i18n($i18n_context)}:</label>
         <input type="text"
@@ -115,7 +115,7 @@
                value="{$content.delimiter|wash}"
                size="5" />
     </div>
-    
+
     <div class="break"></div>
 </div>
 
@@ -124,6 +124,6 @@
     <textarea rows="5"
               cols="80"
               name="ContentClass_sckenhancedselection_query_{$id}">{$content.query|wash}</textarea>
-</div>       
-     
-{/let}     
+</div>
+
+{/let}
