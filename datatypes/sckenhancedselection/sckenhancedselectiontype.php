@@ -35,10 +35,7 @@ class SckEnhancedSelectionType extends eZDataType
     function SckEnhancedSelectionType()
     {
         $this->eZDataType( self::DATATYPESTRING,
-                           ezpI18n::tr( 'extension/sckenhancedselection/datatypes', 'Enhanced Selection 2', 'Datatype name' ),
-                           array( 'serialize_supported' => true,
-                                  'object_serialize_map' => array( 'data_text' => 'selection' )
-                                )
+                           ezpI18n::tr( 'extension/sckenhancedselection/datatypes', 'Enhanced Selection 2', 'Datatype name' )
                          );
     }
 
@@ -369,43 +366,71 @@ class SckEnhancedSelectionType extends eZDataType
 
     function objectAttributeContent( $contentObjectAttribute )
     {
-        $content = array();
-        $contentString = $contentObjectAttribute->attribute( 'data_text' );
+        $identifiers = SckEnhancedSelection::fetchByAttribute(
+            $contentObjectAttribute->attribute( 'id' ),
+            $contentObjectAttribute->attribute( 'version' )
+        );
 
-        if( !empty( $contentString ) )
+        $stringIdentifiers = array();
+
+        foreach ( $identifiers as $identifier )
         {
-            $content = unserialize( $contentString );
+            $stringIdentifiers[] = $identifier->attribute( 'identifier' );
         }
 
-        return $content;
+        return $stringIdentifiers;
     }
 
     function hasObjectAttributeContent( $contentObjectAttribute )
     {
-        $contentString = $contentObjectAttribute->attribute( 'data_text' );
+        $count = SckEnhancedSelection::countByAttribute(
+            $contentObjectAttribute->attribute( 'id' ),
+            $contentObjectAttribute->attribute( 'version' )
+        );
 
-        if( empty( $contentString ) )
-        {
-            return false;
-        }
-
-        $selection = unserialize( $contentString );
-
-        if( !is_array( $selection ) or count( $selection ) == 0 )
-        {
-            return false;
-        }
-
-        return true;
+        return $count > 0;
     }
 
     function storeObjectAttribute( $objectAttribute )
     {
         $content = $objectAttribute->content();
 
-        $contentString = serialize( $content );
+        SckEnhancedSelection::removeByAttribute(
+            $objectAttribute->attribute( 'id' ),
+            $objectAttribute->attribute( 'version' )
+        );
 
-        $objectAttribute->setAttribute( 'data_text', $contentString );
+        if ( !is_array( $content ) )
+        {
+            $content = array();
+        }
+
+        foreach ( $content as $identifier )
+        {
+            $sckEnhancedSelection = new SckEnhancedSelection(
+                array(
+                    'contentobject_attribute_id' => $objectAttribute->attribute( 'id' ),
+                    'contentobject_attribute_version' => $objectAttribute->attribute( 'version' ),
+                    'identifier' => $identifier
+                )
+            );
+
+            $sckEnhancedSelection->store();
+        }
+    }
+
+    /**
+     * Deletes $objectAttribute datatype data, optionally in version $version.
+     *
+     * @param eZContentObjectAttribute $objectAttribute
+     * @param int $version
+     */
+    function deleteStoredObjectAttribute( $objectAttribute, $version = null )
+    {
+        SckEnhancedSelection::removeByAttribute(
+            $objectAttribute->attribute( 'id' ),
+            $version
+        );
     }
 
     function customObjectAttributeHTTPAction( $http, $action, $objectAttribute, $parameters )
