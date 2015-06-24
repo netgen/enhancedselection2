@@ -7,6 +7,8 @@ Installation instructions:
 
 - Place the 'enhancedselection2' folder in the 'extension' folder.
 
+- Import sql/mysql/schema.sql file to your database
+
 - Open /settings/override/site.ini.append(.php) and add the enhancedselection
   extension to the active extensions.
 
