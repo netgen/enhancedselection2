@@ -39,6 +39,22 @@ class SckEnhancedSelectionType extends eZDataType
                          );
     }
 
+    /**
+     * Initializes the object attribute with some data.
+     * @param eZContentObjectAttribute $objectAttribute
+     * @param int $currentVersion
+     * @param eZContentObjectAttribute $originalContentObjectAttribute
+     */
+    function initializeObjectAttribute( $objectAttribute, $currentVersion, $originalContentObjectAttribute )
+    {
+        if ( $currentVersion != false )
+        {
+            $content = $originalContentObjectAttribute->content();
+            $objectAttribute->setContent( $content );
+            $objectAttribute->store();
+        }
+    }
+
 /********
 * CLASS *
 ********/
