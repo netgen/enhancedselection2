@@ -25,8 +25,6 @@
   \author  Original Hans Melis, ported to PHP5 by Tom Couwberghs
 */
 
-include_once( 'kernel/common/i18n.php' );
-
 class SckEnhancedSelectionType extends eZDataType
 {
     const DATATYPESTRING = 'sckenhancedselection';
