@@ -1,4 +1,4 @@
-Enhanced selection Datatype
+Enhanced selection datatype
 ---------------------------
 
 The Enhanced selection type was initially based on the standard eZ Publish
@@ -54,18 +54,18 @@ Install the extension, create a test class, add the datatype and play with it.
 
 Please read [installation instructions](INSTALL.md)
 
-## Version History
+## Version history
 
 * v1.0:
     - Original SCK-CEN extension
 
 * v1.1:
-    - Added Solr indexing handler together with fromString/toString methods in datatype
+    - Added Solr indexing handler together with `fromString`/`toString` methods in datatype
 
 * v2.0:
     - Rewrite extension to store the options in the database table instead of serialized array
 
-## Disclaimer & Copyright
+## Disclaimer & copyright
 
 Enhanced selection extension for eZ Publish 4.x
 Copyright (C) 2003-2008  SCK-CEN (Belgian Nuclear Research Centre)
@@ -84,4 +84,5 @@ This extension has been developed as part of projects inside the
 Belgian Nuclear Research Centre (http://www.sckcen.be).
 
 The extension is tailored to fit our needs, and is shared with the community as is.
+
 YMMV!
