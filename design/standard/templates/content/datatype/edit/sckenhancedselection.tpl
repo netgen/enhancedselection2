@@ -1,7 +1,7 @@
 {let content=$attribute.content
      classContent=$attribute.class_content
      id=$attribute.id
-     i18n_context="extension/sckenhancedselection/object/edit"
+     i18n_context="extension/enhancedselection2/object/edit"
      available_options=$classContent.options}
 
 {section show=and(is_set($classContent.db_options),count($classContent.db_options)|gt(0))}

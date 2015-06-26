@@ -1,6 +1,6 @@
 {let id=$class_attribute.id
      content=$class_attribute.content
-     i18n_context="extension/sckenhancedselection/class/edit"}
+     i18n_context="extension/enhancedselection2/class/edit"}
 
 <fieldset>
     <legend>{"Option list"|i18n($i18n_context)}</legend>

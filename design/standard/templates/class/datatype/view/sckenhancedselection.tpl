@@ -1,5 +1,5 @@
 {let content=$class_attribute.content
-     i18n_context="extension/sckenhancedselection/class/view"}
+     i18n_context="extension/enhancedselection2/class/view"}
 
 <label>{"Option list"|i18n($i18n_context)}:</label>
 <table class="list" cellspacing="0">
