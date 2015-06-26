@@ -8,8 +8,8 @@
 
 {set-block scope=root variable=pdf_text}
     {foreach $available_options as $option}
-        {if $content|contains( $option.identifier )}
-            {$option.name|wash}
+        {if $content|contains( $option.item.identifier )}
+            {$option.item.name|wash}
 
             {delimiter}
                 {cond( $class_content.delimiter|ne( "" ), $class_content.delimiter|wash, ", " )}

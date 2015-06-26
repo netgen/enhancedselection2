@@ -26,23 +26,23 @@
                     <td>
                         <input type="hidden"
                             name="ContentClass_sckenhancedselection_id_{$id|wash}[]"
-                            value="{$option_row.id|wash}" />
+                            value="{$option_row.item.id|wash}" />
 
                         <input type="text"
-                            name="ContentClass_sckenhancedselection_name_{$id|wash}[{$option_row.id|wash}]"
-                            value="{$option_row.name|wash}" />
+                            name="ContentClass_sckenhancedselection_name_{$id|wash}[{$option_row.item.id|wash}]"
+                            value="{$option_row.item.name|wash}" />
                     </td>
 
                     <td>
                         <input type="text"
-                            name="ContentClass_sckenhancedselection_identifier_{$id|wash}[{$option_row.id|wash}]"
-                            value="{$option_row.identifier|wash}" />
+                            name="ContentClass_sckenhancedselection_identifier_{$id|wash}[{$option_row.item.id|wash}]"
+                            value="{$option_row.item.identifier|wash}" />
                     </td>
 
                     <td>
                         <input type="text"
-                            name="ContentClass_sckenhancedselection_priority_{$id|wash}[{$option_row.id|wash}]"
-                            value="{$option_row.priority|wash}"
+                            name="ContentClass_sckenhancedselection_priority_{$id|wash}[{$option_row.item.id|wash}]"
+                            value="{$option_row.item.priority|wash}"
                             size="3" />
                     </td>
 

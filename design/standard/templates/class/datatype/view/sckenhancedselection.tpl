@@ -12,8 +12,8 @@
     {foreach $content.options as $option}
         <tr>
             <td>{$option.number|wash}.</td>
-            <td>{first_set( $option.name|wash, "&nbsp;" )}</td>
-            <td>{first_set( $option.identifier|wash, "&nbsp;" )}</td>
+            <td>{first_set( $option.item.name|wash, "&nbsp;" )}</td>
+            <td>{first_set( $option.item.identifier|wash, "&nbsp;" )}</td>
         </tr>
     {/foreach}
 </table>

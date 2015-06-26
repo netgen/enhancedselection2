@@ -12,10 +12,10 @@
     {if $class_content.is_multiselect}multiple="multiple"{/if}>
 
     {foreach $available_options as $option}
-        <option value="{$option.identifier|wash}"
-            {if $content|contains( $option.identifier )}selected="selected"{/if}>
+        <option value="{$option.item.identifier|wash}"
+            {if $content|contains( $option.item.identifier )}selected="selected"{/if}>
 
-            {$option.name|wash}
+            {$option.item.name|wash}
         </option>
     {/foreach}
 </select>
