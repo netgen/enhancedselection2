@@ -1,22 +1,22 @@
-{let content=$attribute.content
-     classContent=$attribute.class_content
-     available_options=$classContent.options
-     id=$attribute.id}
+{def $content = $attribute.content}
+{def $class_content = $attribute.class_content}
+{def $available_options = $class_content.options}
+{def $id = $attribute.id}
 
-{section show=and(is_set($classContent.db_options),count($classContent.db_options)|gt(0))}
-    {set available_options=$classContent.db_options}
-{/section}
+{if and( is_set( $class_content.db_options ), $class_content.db_options|count|gt( 0 ) )}
+    {set available_options = $class_content.db_options}
+{/if}
 
-<select name="ContentObjectAttribute_sckenhancedselection_selection_{$id}[]"
-        {section show=$classContent.is_multiselect}multiple="multiple"{/section}>
+<select name="ContentObjectAttribute_sckenhancedselection_selection_{$id|wash}[]"
+    {if $class_content.is_multiselect}multiple="multiple"{/if}>
 
-    {section var=option loop=$available_options}
+    {foreach $available_options as $option}
         <option value="{$option.item.identifier|wash}"
-                {section show=$content|contains($option.item.identifier)}selected="selected"{/section}>
+            {if $content|contains( $option.item.identifier )}selected="selected"{/if}>
+
             {$option.item.name|wash}
         </option>
-    {/section}
-
+    {/foreach}
 </select>
 
-{/let}
+{undef $content $class_content $available_options $id}

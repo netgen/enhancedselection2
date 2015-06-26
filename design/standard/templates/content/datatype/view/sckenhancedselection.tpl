@@ -1,12 +1,20 @@
-{let content=$attribute.content
-     classContent=$attribute.class_content
-     i18n_context="extension/enhancedselection2/object/view"
-     available_options=$classContent.options}
+{def $content = $attribute.content}
+{def $class_content = $attribute.class_content}
+{def $i18n_context = "extension/enhancedselection2/object/view"}
+{def $available_options = $class_content.options}
 
-{section show=and(is_set($classContent.db_options),count($classContent.db_options)|gt(0))}
-    {set available_options=$classContent.db_options}
-{/section}
+{if and( is_set( $class_content.db_options ), $class_content.db_options|count|gt( 0 ) )}
+    {set available_options = $class_content.db_options}
+{/if}
 
-{section var=option loop=$available_options}{section-exclude match=$content|contains($option.item.identifier)|not}{$option.item.name|wash}{delimiter}{cond($classContent.delimiter|ne(""),$classContent.delimiter,", ")}{/delimiter}{/section}
+{foreach $available_options as $option}
+    {if $content|contains( $option.item.identifier )}
+        {$option.item.name|wash}
 
-{/let}
+        {delimiter}
+            {cond( $class_content.delimiter|ne( "" ), $class_content.delimiter|wash, ", " )}
+        {/delimiter}
+    {/if}
+{/foreach}
+
+{undef $content $class_content $i18n_context $available_options}
