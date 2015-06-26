@@ -3,14 +3,8 @@
 class SckEnhancedSelection extends eZPersistentObject
 {
     /**
-     * @param array $row
-     */
-    function __construct( $row )
-    {
-        parent::__construct( $row );
-    }
-
-    /**
+     * Returns the definition array
+     *
      * @return array
      */
     static function definition()
@@ -44,6 +38,8 @@ class SckEnhancedSelection extends eZPersistentObject
     }
 
     /**
+     * Returns the specific record from the table
+     *
      * @param int $contentObjectAttributeId
      * @param int $contentObjectAttributeVersion
      * @param string $identifier
@@ -64,6 +60,8 @@ class SckEnhancedSelection extends eZPersistentObject
     }
 
     /**
+     * Returns records from the table by attribute
+     *
      * @param int $contentObjectAttributeId
      * @param int $contentObjectAttributeVersion
      *
@@ -89,6 +87,8 @@ class SckEnhancedSelection extends eZPersistentObject
     }
 
     /**
+     * Returns count of records in the table by attribute
+     *
      * @param int $contentObjectAttributeId
      * @param int $contentObjectAttributeVersion
      *
@@ -106,6 +106,8 @@ class SckEnhancedSelection extends eZPersistentObject
     }
 
     /**
+     * Removes the data from the table by attribute
+     *
      * @param int $contentObjectAttributeId
      * @param int $contentObjectAttributeVersion
      */

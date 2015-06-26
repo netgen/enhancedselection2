@@ -1,11 +1,11 @@
 <?php
 class ezfSolrDocumentFieldSckEnhancedSelection extends ezfSolrDocumentFieldBase
 {
-    public static $subattributesDefinition = array(
+    protected static $subattributesDefinition = array(
         self::DEFAULT_SUBATTRIBUTE => 'lckeyword',
         'identifiers' => 'lckeyword',
         'values' => 'text'
-     );
+    );
 
     /**
      * The name of the default subattribute. It will be used when
@@ -17,23 +17,16 @@ class ezfSolrDocumentFieldSckEnhancedSelection extends ezfSolrDocumentFieldBase
     const DEFAULT_SUBATTRIBUTE = 'options';
 
     /**
-     * @see ezfSolrDocumentFieldBase::__construct()
-     */
-    function __construct( eZContentObjectAttribute $attribute )
-    {
-        parent::__construct( $attribute );
-    }
-
-    /**
-     * @see ezfSolrDocumentFieldBase::getData()
+     * Get data to index, and field name to use.
+     *
+     * @return array Associative array with field name and field value.
+     *               Field value can be an array.
      */
     public function getData()
     {
         $data = array();
 
-        $contentClassAttribute = $this->ContentObjectAttribute->attribute(
-            'contentclass_attribute'
-        );
+        $contentClassAttribute = $this->ContentObjectAttribute->attribute( 'contentclass_attribute' );
 
         if ( $this->ContentObjectAttribute->attribute( 'has_content' ) )
         {
@@ -48,12 +41,12 @@ class ezfSolrDocumentFieldSckEnhancedSelection extends ezfSolrDocumentFieldBase
                 $optionsNode = $dom->getElementsByTagName( 'options' )->item( 0 );
                 $options['options'] = array();
 
-                if ( $optionsNode instanceof DomElement && $optionsNode->hasChildNodes() == true )
+                if ( $optionsNode instanceof DOMElement && $optionsNode->hasChildNodes() == true )
                 {
                     $children = $optionsNode->childNodes;
-
                     foreach ( $children as $child )
                     {
+                        /** @var \DOMElement $child */
                         $options['options'][$child->getAttribute( 'identifier' )] = $child->getAttribute( 'name' );
                     }
                 }
@@ -84,13 +77,18 @@ class ezfSolrDocumentFieldSckEnhancedSelection extends ezfSolrDocumentFieldBase
         return $data;
     }
 
-
     /**
-     * @see ezfSolrDocumentFieldBase::getFieldName()
+     * Get field name
+     *
+     * @param eZContentClassAttribute $classAttribute Instance of eZContentClassAttribute
+     * @param mixed $subAttribute Typically the 'subattribute' name
+     * @param string $context
+     *
+     * @return string Fully qualified Solr field name
      */
     public static function getFieldName( eZContentClassAttribute $classAttribute, $subAttribute = null, $context = 'search' )
     {
-        if ( $subAttribute && $subAttribute !== '' && array_key_exists( $subAttribute, self::$subattributesDefinition ) && $subAttribute != self::DEFAULT_SUBATTRIBUTE )
+        if ( !empty( $subAttribute ) && array_key_exists( $subAttribute, self::$subattributesDefinition ) && $subAttribute !== self::DEFAULT_SUBATTRIBUTE )
         {
             // A subattribute was passed
             return self::generateSubattributeFieldName(
@@ -110,7 +108,14 @@ class ezfSolrDocumentFieldSckEnhancedSelection extends ezfSolrDocumentFieldBase
     }
 
     /**
-     * @see ezfSolrDocumentFieldBase::getFieldNameList()
+     * Gets the list of solr fields for the given content class attribute. Delegates
+     * the action to the datatype-specific handler, if any. If none, the datatype has one
+     * field only, hence the delegation to the local getFieldName.
+     *
+     * @param eZContentClassAttribute $classAttribute
+     * @param array $exclusiveTypeFilter Array of types ( strings ) which should be excluded from the result
+     *
+     * @return array Array of applicable solr field names
      */
     public static function getFieldNameList( eZContentClassAttribute $classAttribute, $exclusiveTypeFilter = array() )
     {
@@ -142,18 +147,25 @@ class ezfSolrDocumentFieldSckEnhancedSelection extends ezfSolrDocumentFieldBase
     }
 
     /**
-     * @see ezfSolrDocumentFieldBase::getClassAttributeType()
+     * Get Solr schema field type from eZContentClassAttribute
+     *
+     * @param eZContentClassAttribute $classAttribute Instance of eZContentClassAttribute.
+     * @param string $subAttribute In case the type of a datatype's sub-attribute is requested,
+     *                             the subattribute's name is passed here.
+     * @param string $context
+     *
+     * @return string Field type. Null if no field type is defined.
      */
     static function getClassAttributeType( eZContentClassAttribute $classAttribute, $subAttribute = null, $context = 'search' )
     {
-        if ( $subAttribute && $subAttribute !== '' && array_key_exists( $subAttribute, self::$subattributesDefinition ) )
+        if ( !empty( $subAttribute ) && array_key_exists( $subAttribute, self::$subattributesDefinition ) )
         {
-            // If a subattribute's type is being explicitly requested :
+            // If a subattribute's type is being explicitly requested
             return self::$subattributesDefinition[$subAttribute];
         }
         else
         {
-            // If no subattribute is passed, return the default subattribute's type :
+            // If no subattribute is passed, return the default subattribute's type
             return self::$subattributesDefinition[self::DEFAULT_SUBATTRIBUTE];
         }
     }
