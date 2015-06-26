@@ -1,5 +1,5 @@
 <?php /* #?ini charset="utf-8"?
 
 [SolrFieldMapSettings]
-CustomMap[sckenhancedselection]=ezfSolrDocumentFieldEnhancedSelection2
+CustomMap[sckenhancedselection]=ezfSolrDocumentFieldSckEnhancedSelection
 */ ?>
