@@ -7,6 +7,10 @@
         {
             "name": "SCK-CEN (Belgian Nuclear Research Centre)",
             "homepage": "http://www.sckcen.be"
+        },
+        {
+            "name": "Netgen",
+            "homepage": "http://www.netgenlabs.com"
         }
     ],
     "require": {
