@@ -5,10 +5,14 @@ require "autoload.php";
 
 $cli = eZCLI::instance();
 
-$script = eZScript::instance( array( 'description' => 'Update the datatype ezenhancedselection to the new version',
-                                      'use-session' => false,
-                                      'use-modules' => false,
-                                      'use-extensions' => true ) );
+$script = eZScript::instance(
+    array(
+        'description' => 'Update the datatype ezenhancedselection to the new version',
+        'use-session' => false,
+        'use-modules' => false,
+        'use-extensions' => true
+    )
+);
 
 $script->startup();
 $script->initialize();
@@ -19,30 +23,32 @@ $cli->output();
 // Find all class attributes based on ezenhancedselection
 $db = eZDB::instance();
 
-$IDs = $db->arrayQuery( "SELECT id
-                         FROM ezcontentclass_attribute
-                         WHERE version = 0
-                         AND data_type_string = 'ezenhancedselection'" );
+$IDs = $db->arrayQuery(
+    "SELECT id
+    FROM ezcontentclass_attribute
+    WHERE version = 0 AND data_type_string = 'ezenhancedselection'"
+);
 
 $cli->output( $cli->stylize( 'bold', 'Updating class attributes' ) );
-if( is_array( $IDs ) and count( $IDs ) > 0 )
+
+if ( is_array( $IDs ) and count( $IDs ) > 0 )
 {
-    foreach( $IDs as $id )
+    foreach ( $IDs as $id )
     {
-        $cli->output( 'Updating class attribute: id - ' . $id['id'] );
-        $classAttrib = eZContentClassAttribute::fetch( $id['id'] );
-        $content = $classAttrib->content();
+        $cli->output( 'Updating class attribute: ID - ' . $id['id'] );
+        $classAttribute = eZContentClassAttribute::fetch( $id['id'] );
+        $content = $classAttribute->content();
 
-        $classAttrib->setAttribute( 'data_type_string' );
-        $classAttrib->DataTypeString = 'sckenhancedselection';
-        $classAttrib->setContent( $content );
-        $classAttrib->store();
+        $classAttribute->setAttribute( 'data_type_string', 'sckenhancedselection' );
+        $classAttribute->DataTypeString = 'sckenhancedselection';
+        $classAttribute->setContent( $content );
+        $classAttribute->store();
 
-        $classAttrib->setAttribute( 'data_int1', 0 );
-        $classAttrib->setAttribute( 'data_text1', '' );
-        $classAttrib->store();
+        $classAttribute->setAttribute( 'data_int1', 0 );
+        $classAttribute->setAttribute( 'data_text1', '' );
+        $classAttribute->store();
 
-        unset( $classAttrib );
+        unset( $classAttribute );
     }
 }
 else
@@ -50,30 +56,33 @@ else
     $cli->output( 'No class attributes to update!' );
 }
 
-$IDs = $db->arrayQuery( "SELECT id, version
-                         FROM ezcontentobject_attribute
-                         WHERE data_type_string = 'ezenhancedselection'" );
+$IDs = $db->arrayQuery(
+    "SELECT id, version
+    FROM ezcontentobject_attribute
+    WHERE data_type_string = 'ezenhancedselection'"
+);
 
 $cli->output();
 $cli->output( $cli->stylize( 'bold', 'Updating object attributes' ) );
-if( is_array( $IDs ) and count( $IDs ) > 0 )
+
+if ( is_array( $IDs ) and count( $IDs ) > 0 )
 {
-    foreach( $IDs as $id )
+    foreach ( $IDs as $id )
     {
         $cli->output( 'Updating object attribute: id - ' . $id['id'] . ' & version - ' . $id['version'] );
-        $objectAttrib = eZContentObjectAttribute::fetch( $id['id'], $id['version'] );
+        $objectAttribute = eZContentObjectAttribute::fetch( $id['id'], $id['version'] );
 
-        $textString = $objectAttrib->attribute( 'data_text' );
+        $textString = $objectAttribute->attribute( 'data_text' );
         $textArray = explode( '***', $textString );
 
-        $objectAttrib->setAttribute( 'data_type_string', 'sckenhancedselection' );
-        $objectAttrib->DataTypeString = 'sckenhancedselection';
-        $objectAttrib->setAttribute( 'data_text', serialize( $textArray ) );
-        $objectAttrib->store();
+        $objectAttribute->setAttribute( 'data_type_string', 'sckenhancedselection' );
+        $objectAttribute->DataTypeString = 'sckenhancedselection';
+        $objectAttribute->setAttribute( 'data_text', serialize( $textArray ) );
+        $objectAttribute->store();
 
-        $objectAttrib->updateSortKey();
+        $objectAttribute->updateSortKey();
 
-        $object = $objectAttrib->attribute( 'object' );
+        $object = $objectAttribute->attribute( 'object' );
         $class = $object->attribute( 'content_class' );
 
         // Reset the name
@@ -82,18 +91,20 @@ if( is_array( $IDs ) and count( $IDs ) > 0 )
         // Update the nodes
         $nodes = $object->attribute( 'assigned_nodes' );
 
-        foreach( $nodes as $node )
+        foreach ( $nodes as $node )
         {
-            eZContentOperationCollection::publishNode( $node->attribute( 'parent_node_id' ),
-												       $object->attribute( 'id' ),
-												       $object->attribute( 'current_version' ),
-												       $object->attribute( 'main_node_id' ) );
+            eZContentOperationCollection::publishNode(
+                $node->attribute( 'parent_node_id' ),
+                $object->attribute( 'id' ),
+                $object->attribute( 'current_version' ),
+                $object->attribute( 'main_node_id' )
+            );
         }
 
-        eZSearch::removeObject( $object );
+        eZSearch::removeObjectById( $object->attribute( 'id' ) );
         eZSearch::addObject( $object );
 
-        unset( $objectAttrib, $object, $class, $node );
+        unset( $objectAttribute, $object, $class, $node );
     }
 }
 else
