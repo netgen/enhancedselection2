@@ -75,10 +75,10 @@ while ( $offset < $attributeCount )
 
                 $sckEnhancedSelection->store();
             }
-
-            $attribute->setAttribute( 'data_text', null );
-            $attribute->store();
         }
+
+        $attribute->setAttribute( 'data_text', null );
+        $attribute->store();
 
         $cli->output( "Converted attribute #{$attribute->attribute( 'id' )} in version {$attribute->attribute( 'version' )}" );
     }

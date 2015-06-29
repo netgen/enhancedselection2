@@ -65,6 +65,9 @@ Please read [installation instructions](INSTALL.md)
 * v2.0:
     - Rewrite extension to store the options in the database table instead of serialized array
 
+* v2.0.1
+    - Bugfix in migrate script
+
 ## Disclaimer & copyright
 
 Enhanced selection extension for eZ Publish 4.x
