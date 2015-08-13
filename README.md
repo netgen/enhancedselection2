@@ -68,6 +68,9 @@ Please read [installation instructions](INSTALL.md)
 * v2.0.1
     - Bugfix in migrate script
 
+* v2.0.2
+    - Add database schema file
+
 ## Disclaimer & copyright
 
 Enhanced selection extension for eZ Publish 4.x
