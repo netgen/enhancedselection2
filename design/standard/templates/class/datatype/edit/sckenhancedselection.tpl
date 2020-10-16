@@ -100,30 +100,80 @@
     </div>
 </fieldset>
 
-<div class="block">
-    <div class="element">
-        <label>{"Multiple choice"|i18n($i18n_context)}:</label>
-        <input type="checkbox"
-               name="ContentClass_sckenhancedselection_multi_{$id}"
-               {section show=$content.is_multiselect}checked="checked"{/section} />
+<fieldset>
+    <legend>{"Field input settings"|i18n($i18n_context)}</legend>
+
+    <div class="block">
+        <div class="element">
+            <label>{"Expanded"|i18n($i18n_context)}:</label>
+            <input type="checkbox"
+                   name="ContentClass_sckenhancedselection_expanded_{$id}"
+                   {section show=$content.is_expanded}checked="checked"{/section} />
+        </div>
+
+        <div class="element">
+            <label>{"Multiple"|i18n($i18n_context)}:</label>
+            <input type="checkbox"
+                   name="ContentClass_sckenhancedselection_multi_{$id}"
+                   {section show=$content.is_multiselect}checked="checked"{/section} />
+        </div>
+    </div>
+    <div class="block alert alert-info">
+        <label>Input formats:</label>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>Element Type</th>
+                <th>Expanded</th>
+                <th>Multiple</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>Select (single choice)</td>
+                <td>false</td>
+                <td>false</td>
+            </tr>
+            <tr>
+                <td>Select (multiple choices)</td>
+                <td>false</td>
+                <td>true</td>
+            </tr>
+            <tr>
+                <td>Radio buttons</td>
+                <td>true</td>
+                <td>false</td>
+            </tr>
+            <tr>
+                <td>Checkboxes</td>
+                <td>true</td>
+                <td>true</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</fieldset>
+
+<fieldset>
+    <legend>{"Other settings"|i18n($i18n_context)}</legend>
+    <div class="block">
+        <div class="element">
+            <label>{"Delimiter"|i18n($i18n_context)}:</label>
+            <input type="text"
+                   name="ContentClass_sckenhancedselection_delimiter_{$id}"
+                   value="{$content.delimiter|wash}"
+                   size="5" />
+        </div>
+
+        <div class="break"></div>
     </div>
 
-    <div class="element">
-        <label>{"Delimiter"|i18n($i18n_context)}:</label>
-        <input type="text"
-               name="ContentClass_sckenhancedselection_delimiter_{$id}"
-               value="{$content.delimiter|wash}"
-               size="5" />
+    <div class="block">
+        <label>{"Database query"|i18n($i18n_context)}:</label>
+        <textarea rows="5"
+                  cols="80"
+                  name="ContentClass_sckenhancedselection_query_{$id}">{$content.query|wash}</textarea>
     </div>
-
-    <div class="break"></div>
-</div>
-
-<div class="block">
-    <label>{"Database query"|i18n($i18n_context)}:</label>
-    <textarea rows="5"
-              cols="80"
-              name="ContentClass_sckenhancedselection_query_{$id}">{$content.query|wash}</textarea>
-</div>
+</fieldset>
 
 {/let}
