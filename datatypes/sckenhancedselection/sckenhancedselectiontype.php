@@ -84,6 +84,7 @@ class SckEnhancedSelectionType extends eZDataType
         $priorityArrayName = join( '_', array( $base, 'sckenhancedselection_priority', $id ) );
 
         $multiSelectName = join( '_', array( $base, 'sckenhancedselection_multi', $id ) );
+        $expandedName = join( '_', array( $base, 'sckenhancedselection_expanded', $id ) );
         $delimiterName = join( '_', array( $base, 'sckenhancedselection_delimiter', $id ) );
 
         $queryName = join( '_', array( $base, 'sckenhancedselection_query', $id ) );
@@ -119,6 +120,15 @@ class SckEnhancedSelectionType extends eZDataType
         else if ( $http->hasPostVariable( 'ContentClassHasInput' ) )
         {
             $content['is_multiselect'] = 0;
+        }
+
+        if ( $http->hasPostVariable( $expandedName ) )
+        {
+            $content['is_expanded'] = 1;
+        }
+        else if ( $http->hasPostVariable( 'ContentClassHasInput' ) )
+        {
+            $content['is_expanded'] = 0;
         }
 
         if ( $http->hasPostVariable( $delimiterName ) )
@@ -747,6 +757,7 @@ class SckEnhancedSelectionType extends eZDataType
         $attributeParametersNode->appendChild( $delimiterElement );
 
         $attributeParametersNode->appendChild( $dom->createElement( 'multiselect', $content['is_multiselect'] ) );
+        $attributeParametersNode->appendChild( $dom->createElement( 'expanded', $content['is_expanded'] ) );
 
         $queryElement = $dom->createElement( 'query' );
         $queryElement->appendChild( $dom->createCDATASection( $content['query'] ) );
@@ -770,10 +781,12 @@ class SckEnhancedSelectionType extends eZDataType
 
         $delimiter = $attributeParametersNode->getElementsByTagName( 'delimiter' )->item( 0 )->nodeValue;
         $multiselect = $attributeParametersNode->getElementsByTagName( 'multiselect' )->item( 0 )->textContent;
+        $expanded = $attributeParametersNode->getElementsByTagName( 'expanded' )->item( 0 )->textContent;
         $query = $attributeParametersNode->getElementsByTagName( 'query' )->item( 0 )->nodeValue;
 
         $content['delimiter'] = $delimiter !== false ? $delimiter : '';
         $content['is_multiselect'] = $multiselect !== false ? intval( $multiselect ) : 0;
+        $content['is_expanded'] = $expanded !== false ? intval( $expanded ) : 0;
         $content['query'] = $query !== false ? $query : '';
         $content['options'] = array();
 
@@ -885,6 +898,13 @@ class SckEnhancedSelectionType extends eZDataType
             $root->appendChild( $multiSelectNode );
         }
 
+        // Expanded
+        if ( isset( $content['is_expanded'] ) )
+        {
+            $expandedNode = $doc->createElement( 'expanded', $content['is_expanded'] );
+            $root->appendChild( $expandedNode );
+        }
+
         // Delimiter
         if ( isset( $content['delimiter'] ) )
         {
@@ -947,6 +967,14 @@ class SckEnhancedSelectionType extends eZDataType
                     $content['is_multiselect'] = intval( $multiSelectNode->textContent );
                 }
 
+                $expandedNode = $dom->getElementsByTagName( 'expanded' )->item( 0 );
+                $content['is_expanded'] = 0;
+
+                if ( $expandedNode instanceof DOMElement )
+                {
+                    $content['is_expanded'] = intval( $expandedNode->textContent );
+                }
+
                 $delimiterNode = $dom->getElementsByTagName( 'delimiter' )->item( 0 );
                 $content['delimiter'] = '';
 
@@ -967,6 +995,7 @@ class SckEnhancedSelectionType extends eZDataType
             {
                 $content['options'] = array();
                 $content['is_multiselect'] = 0;
+                $content['is_expanded'] = 0;
                 $content['delimiter'] = '';
                 $content['query'] = '';
             }
